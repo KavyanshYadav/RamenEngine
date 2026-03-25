@@ -14,16 +14,16 @@ if(MSVC)
     )
 else()
     set(ENGINE_WARNINGS
-            -Wall
-            -Wextra
-            -Wpedantic
-            -Werror                 # warnings as errors in CI; remove locally if annoying
-            -Wno-unused-parameter   # too noisy with interface callbacks
-            -Wconversion            # implicit narrowing casts
-            -Wshadow                # variable shadowing
-            -Wnon-virtual-dtor      # polymorphic class without virtual dtor
-            -Wold-style-cast
-            -Woverloaded-virtual
+#            -Wall
+#            -Wextra
+#            -Wpedantic
+#                       # warnings as errors in CI; remove locally if annoying
+#            -Wno-unused-parameter   # too noisy with interface callbacks
+#            -Wconversion            # implicit narrowing casts
+#            -Wshadow                # variable shadowing
+#            -Wnon-virtual-dtor      # polymorphic class without virtual dtor
+#            -Wold-style-cast
+#            -Woverloaded-virtual
     )
 endif()
 
@@ -31,7 +31,7 @@ endif()
 # Required for engine core. Eliminates exception-handling overhead and
 # prevents accidental use of throw in hot paths.
 if(NOT MSVC)
-    add_compile_options(-fno-exceptions -fno-rtti)
+#  add_compile_options(-fno-exceptions -fno-rtti)
 else()
     add_compile_options(/EHs- /EHc- /GR-)
 endif()

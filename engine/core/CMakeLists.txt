@@ -9,7 +9,7 @@ engine_add_module(
         SOURCES
         src/platform/Platform.cpp
 #        # ── Logging (must be first — all others call ENGINE_LOG_*) ──────────
-#        src/log/Logger.cpp
+        src/log/Logger.cpp
 #
 #        # ── Memory ──────────────────────────────────────────────────────────
 #        src/memory/ArenaAllocator.cpp
@@ -19,7 +19,7 @@ engine_add_module(
 #        src/string/StringId.cpp
 #
 #        # ── Platform (bgfx + SDL2 window) ───────────────────────────────────
-#        src/platform/Platform.cpp
+       src/platform/Platform.cpp
 #
 #        # ── Job system ──────────────────────────────────────────────────────
 #        src/jobs/JobScheduler.cpp
@@ -35,7 +35,7 @@ engine_add_module(
 #        src/assets/AssetSystem.cpp
 #
 #        # ── Engine root ─────────────────────────────────────────────────────
-#        src/Engine.cpp
+        src/Engine.cpp
 
         PUBLIC_DEPS
         # bx types are part of our public API (IAllocator inherits bx::AllocatorI)
@@ -46,8 +46,10 @@ engine_add_module(
         # bgfx + SDL2 are PRIVATE — consumers never include bgfx/SDL2 headers directly
         bgfx
         SDL2::SDL2
+        fmt::fmt
+        spdlog::spdlog
 )
-
+target_compile_definitions(engine_core PRIVATE SPDLOG_NO_EXCEPTIONS)
 # ── Platform-specific link requirements ──────────────────────────────────────
 if(WIN32)
     target_link_libraries(engine_core PRIVATE

@@ -59,20 +59,49 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(tomlplusplus)
 
+
+# ── fmt ───────────────────────────────────────────────────────────────────
+
+FetchContent_Declare(
+        fmt
+        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+        GIT_TAG        11.1.4  # A recent, stable, C++20-compliant release
+        GIT_SHALLOW    TRUE
+)
+set(FMT_OS OFF CACHE BOOL "Disable fmt os module" FORCE)
+set(FMT_TEST OFF CACHE BOOL "Disable fmt tests" FORCE)
+set(FMT_INSTALL OFF CACHE BOOL "Disable fmt install" FORCE)
+set(FMT_USE_EXCEPTIONS OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(fmt)
+if(TARGET fmt)
+    target_compile_options(fmt PRIVATE
+            -fexceptions
+            -frtti
+    )
+endif()
+
+
 # ── spdlog ───────────────────────────────────────────────────────────────────
 FetchContent_Declare(
         spdlog
         GIT_REPOSITORY https://github.com/gabime/spdlog.git
-        GIT_TAG        v1.13.0 # Or 'master' for latest
+        GIT_TAG        v1.17.0 # Or 'master' for latest
         GIT_SHALLOW    TRUE
 )
-
-# We don't need to build spdlog's examples or tests
+set(SPDLOG_FMT_EXTERNAL   ON  CACHE BOOL "" FORCE)
+set(SPDLOG_NO_EXCEPTIONS  ON  CACHE BOOL "" FORCE)
 set(SPDLOG_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(SPDLOG_BUILD_TESTS    OFF CACHE BOOL "" FORCE)
 set(SPDLOG_INSTALL        OFF CACHE BOOL "" FORCE)
-
+# We don't need to build spdlog's examples or tests
 FetchContent_MakeAvailable(spdlog)
+if(TARGET spdlog)
+    target_compile_options(spdlog PRIVATE
+            -fexceptions
+            -frtti
+            -Wno-error -Wno-deprecated-literal-operator
+    )
+endif()
 # ── Catch2 ───────────────────────────────────────────────────────────────────
 if(ENGINE_BUILD_TESTS)
     FetchContent_Declare(
